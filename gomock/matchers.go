@@ -85,6 +85,18 @@ func (n notMatcher) String() string {
 	return "not(" + n.m.String() + ")"
 }
 
+type identicalMatcher struct {
+	x interface{}
+}
+
+func (n identicalMatcher) Matches(x interface{}) bool {
+	return x == n.x
+}
+
+func (n identicalMatcher) String() string {
+	return fmt.Sprintf("is identical to %v", n.x)
+}
+
 // Constructors
 func Any() Matcher             { return anyMatcher{} }
 func Eq(x interface{}) Matcher { return eqMatcher{x} }
@@ -95,3 +107,4 @@ func Not(x interface{}) Matcher {
 	}
 	return notMatcher{Eq(x)}
 }
+func Identical(x interface{}) Matcher { return identicalMatcher{x} }
